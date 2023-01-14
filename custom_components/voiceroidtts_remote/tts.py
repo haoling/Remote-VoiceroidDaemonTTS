@@ -54,10 +54,9 @@ class VoiceroidProvider(Provider):
 
         try:
             with async_timeout.timeout(5):
-                encoded_message = quote(message)
                 url_param = {
                     "who": language,
-                    "text": encoded_message,
+                    "text": message,
                 }
 
                 request = await websession.get(self._url, params=url_param)
