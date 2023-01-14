@@ -1,1 +1,1 @@
-"""Support for pico integration."""
+DEFAULT_LANG = "aoi-narrator"

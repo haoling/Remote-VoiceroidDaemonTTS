@@ -11,12 +11,12 @@ from homeassistant.components.tts import CONF_LANG, PLATFORM_SCHEMA, Provider
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from urllib.parse import quote
 
+from . import DEFAULT_LANG
+
 
 _LOGGER = logging.getLogger(__name__)
 
 SUPPORT_LANGUAGES = ["aoi-narrator", "aoi", "akane", "akari"]
-
-DEFAULT_LANG = "aoi-narrator"
 
 CONF_URL = "url"
 
