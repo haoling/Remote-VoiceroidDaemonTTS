@@ -42,7 +42,7 @@ class VoiceroidProvider(Provider):
     @property
     def default_language(self):
         """Return the default language."""
-        return DEFAULT_LANG
+        return self._language
 
     @property
     def supported_languages(self):
