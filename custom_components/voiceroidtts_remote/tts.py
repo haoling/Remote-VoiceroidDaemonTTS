@@ -7,8 +7,7 @@ import async_timeout
 import voluptuous as vol
 
 import homeassistant.helpers.config_validation as cv
-from homeassistant.components.tts import PLATFORM_SCHEMA, Provider
-from homeassistant.const import CONF_HOST, CONF_PORT
+from homeassistant.components.tts import CONF_LANG, PLATFORM_SCHEMA, Provider
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from urllib.parse import quote
 
@@ -17,31 +16,33 @@ _LOGGER = logging.getLogger(__name__)
 
 SUPPORT_LANGUAGES = ["aoi-narrator", "aoi", "akane", "akari"]
 
-DEFAULT_LANGUAGE = "aoi-narrator"
+DEFAULT_LANG = "aoi-narrator"
 
 CONF_URL = "url"
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
-        vol.Optional(CONF_URL): cv.string
+        vol.Optional(CONF_URL): cv.string,
+        vol.Optional(CONF_LANG, default=DEFAULT_LANG): vol.In(SUPPORT_LANGUAGES)
     }
 )
 
 
 def get_engine(hass, config, discovery_info=None):
-    return VoiceroidProvider(hass, config[CONF_URL])
+    return VoiceroidProvider(hass, config[CONF_URL], config[CONF_LANG])
 
 
 class VoiceroidProvider(Provider):
-    def __init__(self, hass, url):
+    def __init__(self, hass, url, language):
         self._hass = hass
         self._url = url
-        self.name = "VoiceroidTTS (Remote)"
+        self._language = language
+        self.name = "VoiceroidTTS ({})".format(self._language)
 
     @property
     def default_language(self):
         """Return the default language."""
-        return DEFAULT_LANGUAGE
+        return DEFAULT_LANG
 
     @property
     def supported_languages(self):
